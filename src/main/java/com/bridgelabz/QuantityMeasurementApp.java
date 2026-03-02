@@ -1,17 +1,84 @@
 package com.bridgelabz;
+import java.util.Objects;
+import java.util.Objects;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class QuantityMeasurementApp {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+    // ================= FEET CLASS =================
+    public static class Feet {
+
+        private final double value;
+
+        public Feet(double value) {
+            this.value = value;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Feet other = (Feet) obj;
+            return Double.compare(this.value, other.value) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
+    }
+
+    // ================= INCH CLASS =================
+    public static class Inches {
+
+        private final double value;
+
+        public Inches(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Inches other = (Inches) obj;
+            return Double.compare(this.value, other.value) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
+    }
+
+    // ================= STATIC METHODS =================
+
+    public static boolean compareFeet(double value1, double value2) {
+        Feet feet1 = new Feet(value1);
+        Feet feet2 = new Feet(value2);
+        return feet1.equals(feet2);
+    }
+
+    public static boolean compareInches(double value1, double value2) {
+        Inches inch1 = new Inches(value1);
+        Inches inch2 = new Inches(value2);
+        return inch1.equals(inch2);
+    }
+
+    // ================= MAIN METHOD =================
+
+    public static void main(String[] args) {
+
+        boolean inchResult = compareInches(1.0, 1.0);
+        boolean feetResult = compareFeet(1.0, 1.0);
+
+        System.out.println("Input: 1.0 inch and 1.0 inch");
+        System.out.println("Output: Equal (" + inchResult + ")");
+
+        System.out.println("Input: 1.0 ft and 1.0 ft");
+        System.out.println("Output: Equal (" + feetResult + ")");
     }
 }
