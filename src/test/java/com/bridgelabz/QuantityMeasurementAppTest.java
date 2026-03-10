@@ -1,97 +1,86 @@
 package com.bridgelabz;
+
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QuantityMeasurementAppTest {
+class QuantityMeasurementAppTest {
+
+    // -------- FEET TESTS --------
 
     @Test
-    public void testFeetEquality() {
-
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
-
-        assertTrue(l1.equals(l2));
+    void testFeetEquality_SameValue() {
+        assertTrue(QuantityMeasurementApp.compareFeet(1.0, 1.0));
     }
 
     @Test
-    public void testInchesEquality() {
-
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
+    void testFeetEquality_DifferentValue() {
+        assertFalse(QuantityMeasurementApp.compareFeet(1.0, 2.0));
     }
 
     @Test
-    public void testFeetInchesComparison() {
+    void testFeetEquality_SameReference() {
 
-        Length feet = new Length(1.0, Length.LengthUnit.FEET);
-        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
+        QuantityMeasurementApp.Feet feet =
+                new QuantityMeasurementApp.Feet(1.0);
 
-        assertTrue(feet.equals(inches));
+        assertTrue(feet.equals(feet));
     }
 
     @Test
-    public void yardEquals3Feet() {
+    void testFeetEquality_NullComparison() {
 
-        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
-        Length feet = new Length(3.0, Length.LengthUnit.FEET);
+        QuantityMeasurementApp.Feet feet =
+                new QuantityMeasurementApp.Feet(1.0);
 
-        assertTrue(yard.equals(feet));
+        assertFalse(feet.equals(null));
     }
 
     @Test
-    public void yardEquals36Inches() {
+    void testFeetEquality_NonNumericInput() {
 
-        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
-        Length inches = new Length(36.0, Length.LengthUnit.INCHES);
+        QuantityMeasurementApp.Feet feet =
+                new QuantityMeasurementApp.Feet(1.0);
 
-        assertTrue(yard.equals(inches));
+        assertFalse(feet.equals("Invalid"));
+    }
+
+    // -------- INCH TESTS --------
+
+    @Test
+    void testInchEquality_SameValue() {
+        assertTrue(QuantityMeasurementApp.compareInches(1.0, 1.0));
     }
 
     @Test
-    public void centimeterEqualsInch() {
-
-        Length cm = new Length(1.0, Length.LengthUnit.CENTIMETERS);
-        Length inch = new Length(0.393701, Length.LengthUnit.INCHES);
-
-        assertTrue(cm.equals(inch));
+    void testInchEquality_DifferentValue() {
+        assertFalse(QuantityMeasurementApp.compareInches(1.0, 2.0));
     }
 
     @Test
-    public void crossUnitInequality() {
+    void testInchEquality_SameReference() {
 
-        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
-        Length feet = new Length(2.0, Length.LengthUnit.FEET);
+        QuantityMeasurementApp.Inches inch =
+                new QuantityMeasurementApp.Inches(1.0);
 
-        assertFalse(yard.equals(feet));
+        assertTrue(inch.equals(inch));
     }
 
     @Test
-    public void sameReference() {
+    void testInchEquality_NullComparison() {
 
-        Length length = new Length(1.0, Length.LengthUnit.YARDS);
+        QuantityMeasurementApp.Inches inch =
+                new QuantityMeasurementApp.Inches(1.0);
 
-        assertTrue(length.equals(length));
+        assertFalse(inch.equals(null));
     }
 
     @Test
-    public void nullComparison() {
+    void testInchEquality_NonNumericInput() {
 
-        Length length = new Length(1.0, Length.LengthUnit.YARDS);
+        QuantityMeasurementApp.Inches inch =
+                new QuantityMeasurementApp.Inches(1.0);
 
-        assertFalse(length.equals(null));
-    }
-
-    @Test
-    public void transitiveProperty() {
-
-        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
-        Length feet = new Length(3.0, Length.LengthUnit.FEET);
-        Length inches = new Length(36.0, Length.LengthUnit.INCHES);
-
-        assertTrue(yard.equals(feet));
-        assertTrue(feet.equals(inches));
-        assertTrue(yard.equals(inches));
+        assertFalse(inch.equals("Invalid"));
     }
 }
