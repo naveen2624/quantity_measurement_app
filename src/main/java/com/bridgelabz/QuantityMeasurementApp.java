@@ -2,49 +2,46 @@ package com.bridgelabz;
 
 public class QuantityMeasurementApp {
 
-    // Generic equality checker
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    // Generic equality method
+    public static boolean demonstrateLengthEquality(Length length1, Length length2) {
+        return length1.equals(length2);
     }
 
-    // Generic demonstration method
-    public static boolean demonstrateLengthComparison(
-            double value1, Length.LengthUnit unit1,
-            double value2, Length.LengthUnit unit2) {
+    // Feet equality
+    public static void demonstrateFeetEquality() {
 
-        Length length1 = new Length(value1, unit1);
-        Length length2 = new Length(value2, unit2);
+        Length feet1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length feet2 = new Length(1.0, Length.LengthUnit.FEET);
 
-        boolean result = length1.equals(length2);
-
-        System.out.println("Input: Quantity(" + value1 + ", " + unit1 +
-                ") and Quantity(" + value2 + ", " + unit2 + ")");
-        System.out.println("Output: Equal (" + result + ")");
-        System.out.println();
-
-        return result;
+        System.out.println("Input: 1.0 ft and 1.0 ft");
+        System.out.println("Output: Equal (" + demonstrateLengthEquality(feet1, feet2) + ")");
     }
 
+    // Inches equality
+    public static void demonstrateInchesEquality() {
+
+        Length inch1 = new Length(1.0, Length.LengthUnit.INCHES);
+        Length inch2 = new Length(1.0, Length.LengthUnit.INCHES);
+
+        System.out.println("Input: 1.0 inch and 1.0 inch");
+        System.out.println("Output: Equal (" + demonstrateLengthEquality(inch1, inch2) + ")");
+    }
+
+    // Feet vs Inches comparison
+    public static void demonstrateFeetInchesComparison() {
+
+        Length feet = new Length(1.0, Length.LengthUnit.FEET);
+        Length inches = new Length(12.0, Length.LengthUnit.INCHES);
+
+        System.out.println("Input: 1.0 ft and 12.0 inch");
+        System.out.println("Output: Equal (" + demonstrateLengthEquality(feet, inches) + ")");
+    }
+
+    // Main method
     public static void main(String[] args) {
 
-        // Feet vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
-                12.0, Length.LengthUnit.INCHES);
-
-        // Yard vs Feet
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                3.0, Length.LengthUnit.FEET);
-
-        // Yard vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                36.0, Length.LengthUnit.INCHES);
-
-        // Centimeters vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETERS,
-                0.393701, Length.LengthUnit.INCHES);
-
-        // Centimeters vs Feet
-        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
-                1.0, Length.LengthUnit.FEET);
+        demonstrateFeetEquality();
+        demonstrateInchesEquality();
+        demonstrateFeetInchesComparison();
     }
 }

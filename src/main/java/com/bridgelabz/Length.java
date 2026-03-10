@@ -7,14 +7,11 @@ public class Length {
     private double value;
     private LengthUnit unit;
 
-    // Enum for supported units
-    // Base unit = INCHES
+    // Enum for units and conversion factors (base unit = inches)
     public enum LengthUnit {
 
         FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
+        INCHES(1.0);
 
         private final double conversionFactor;
 
@@ -37,13 +34,9 @@ public class Length {
         this.unit = unit;
     }
 
-    // Convert to base unit (inches)
+    // Convert value to base unit (inches)
     private double convertToBaseUnit() {
-
-        double result = value * unit.getConversionFactor();
-
-        // rounding improves precision stability
-        return Math.round(result * 100000.0) / 100000.0;
+        return value * unit.getConversionFactor();
     }
 
     // Compare two Length objects
@@ -58,7 +51,7 @@ public class Length {
         ) == 0;
     }
 
-    // equals override
+    // Override equals method
     @Override
     public boolean equals(Object obj) {
 
