@@ -46,8 +46,12 @@ public class Length {
         return unit;
     }
 
-    // ---------------- CONVERSION ----------------
+    // -------- Convert to Base Unit --------
+    private double toBaseUnit() {
+        return value * unit.getConversionFactor();
+    }
 
+    // -------- Static Conversion API (UC5) --------
     public static double convert(double value, LengthUnit source, LengthUnit target) {
 
         if (!Double.isFinite(value))
@@ -57,50 +61,55 @@ public class Length {
             throw new IllegalArgumentException("Unit cannot be null");
 
         double baseValue = value * source.getConversionFactor();
-        double result = baseValue / target.getConversionFactor();
-
-        return result;
+        return baseValue / target.getConversionFactor();
     }
 
     public Length convertTo(LengthUnit targetUnit) {
-        double newValue = convert(this.value, this.unit, targetUnit);
-        return new Length(newValue, targetUnit);
+
+        double converted = convert(this.value, this.unit, targetUnit);
+
+        return new Length(converted, targetUnit);
     }
 
-    // ---------------- ADDITION ----------------
-
+    // -------- UC6 Addition (Result in first operand unit) --------
     public Length add(Length other) {
 
         if (other == null)
             throw new IllegalArgumentException("Second operand cannot be null");
 
-        // convert both to base unit
-        double base1 = this.value * this.unit.getConversionFactor();
-        double base2 = other.value * other.unit.getConversionFactor();
+        double sumBase = this.toBaseUnit() + other.toBaseUnit();
 
-        double sumBase = base1 + base2;
+        double result = sumBase / this.unit.getConversionFactor();
 
-        // convert back to unit of first operand
-        double resultValue = sumBase / this.unit.getConversionFactor();
-
-        return new Length(resultValue, this.unit);
+        return new Length(result, this.unit);
     }
 
-    // Static overloaded addition
-    public static Length add(Length l1, Length l2) {
+    // -------- UC7 Addition (Explicit Target Unit) --------
+    public Length add(Length other, LengthUnit targetUnit) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Second operand cannot be null");
+
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        double sumBase = this.toBaseUnit() + other.toBaseUnit();
+
+        double result = sumBase / targetUnit.getConversionFactor();
+
+        return new Length(result, targetUnit);
+    }
+
+    // Static overloaded method
+    public static Length add(Length l1, Length l2, LengthUnit targetUnit) {
 
         if (l1 == null || l2 == null)
             throw new IllegalArgumentException("Operands cannot be null");
 
-        return l1.add(l2);
+        return l1.add(l2, targetUnit);
     }
 
-    // ---------------- EQUALITY ----------------
-
-    private double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
-    }
-
+    // -------- Equality --------
     @Override
     public boolean equals(Object obj) {
 
@@ -112,15 +121,12 @@ public class Length {
 
         Length other = (Length) obj;
 
-        return Double.compare(
-                this.convertToBaseUnit(),
-                other.convertToBaseUnit()
-        ) == 0;
+        return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(convertToBaseUnit());
+        return Objects.hash(toBaseUnit());
     }
 
     @Override
