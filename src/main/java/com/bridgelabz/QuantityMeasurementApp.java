@@ -1,5 +1,5 @@
 package com.bridgelabz;
-import java.util.Objects;
+
 import java.util.Objects;
 
 public class QuantityMeasurementApp {
@@ -13,14 +13,27 @@ public class QuantityMeasurementApp {
             this.value = value;
         }
 
+        public double toInches() {
+            return value * 12;
+        }
+
         @Override
         public boolean equals(Object obj) {
 
             if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
+            if (obj == null) return false;
 
-            Feet other = (Feet) obj;
-            return Double.compare(this.value, other.value) == 0;
+            if (obj instanceof Feet) {
+                Feet other = (Feet) obj;
+                return Double.compare(this.value, other.value) == 0;
+            }
+
+            if (obj instanceof Inches) {
+                Inches other = (Inches) obj;
+                return Double.compare(this.toInches(), other.value) == 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -38,14 +51,27 @@ public class QuantityMeasurementApp {
             this.value = value;
         }
 
+        public double toFeet() {
+            return value / 12;
+        }
+
         @Override
         public boolean equals(Object obj) {
 
             if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
+            if (obj == null) return false;
 
-            Inches other = (Inches) obj;
-            return Double.compare(this.value, other.value) == 0;
+            if (obj instanceof Inches) {
+                Inches other = (Inches) obj;
+                return Double.compare(this.value, other.value) == 0;
+            }
+
+            if (obj instanceof Feet) {
+                Feet other = (Feet) obj;
+                return Double.compare(this.value, other.toInches()) == 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -68,17 +94,27 @@ public class QuantityMeasurementApp {
         return inch1.equals(inch2);
     }
 
+    public static boolean compareFeetAndInches(double feetValue, double inchValue) {
+        Feet feet = new Feet(feetValue);
+        Inches inches = new Inches(inchValue);
+        return feet.equals(inches);
+    }
+
     // ================= MAIN METHOD =================
 
     public static void main(String[] args) {
 
         boolean inchResult = compareInches(1.0, 1.0);
         boolean feetResult = compareFeet(1.0, 1.0);
+        boolean crossResult = compareFeetAndInches(1.0, 12.0);
 
         System.out.println("Input: 1.0 inch and 1.0 inch");
         System.out.println("Output: Equal (" + inchResult + ")");
 
         System.out.println("Input: 1.0 ft and 1.0 ft");
         System.out.println("Output: Equal (" + feetResult + ")");
+
+        System.out.println("Input: 1.0 ft and 12.0 inch");
+        System.out.println("Output: Equal (" + crossResult + ")");
     }
 }

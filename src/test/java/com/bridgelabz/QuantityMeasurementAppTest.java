@@ -1,4 +1,5 @@
 package com.bridgelabz;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,5 +69,17 @@ class QuantityMeasurementAppTest {
         QuantityMeasurementApp.Inches inch =
                 new QuantityMeasurementApp.Inches(1.0);
         assertFalse(inch.equals("Invalid"));
+    }
+
+    // -------- FEET ↔ INCH TESTS --------
+
+    @Test
+    void testFeetAndInchEquality_Equal() {
+        assertTrue(QuantityMeasurementApp.compareFeetAndInches(1.0, 12.0));
+    }
+
+    @Test
+    void testFeetAndInchEquality_NotEqual() {
+        assertFalse(QuantityMeasurementApp.compareFeetAndInches(1.0, 10.0));
     }
 }
