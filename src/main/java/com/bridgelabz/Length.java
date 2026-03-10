@@ -1,5 +1,4 @@
 package com.bridgelabz;
-
 import java.util.Objects;
 
 public class Length {
@@ -8,11 +7,14 @@ public class Length {
     private double value;
     private LengthUnit unit;
 
-    // Enum for units and conversion factors (base unit = inches)
+    // Enum for supported units
+    // Base unit = INCHES
     public enum LengthUnit {
 
         FEET(12.0),
-        INCHES(1.0);
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
 
         private final double conversionFactor;
 
@@ -35,9 +37,13 @@ public class Length {
         this.unit = unit;
     }
 
-    // Convert value to base unit (inches)
+    // Convert to base unit (inches)
     private double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
+
+        double result = value * unit.getConversionFactor();
+
+        // rounding improves precision stability
+        return Math.round(result * 100000.0) / 100000.0;
     }
 
     // Compare two Length objects
@@ -52,7 +58,7 @@ public class Length {
         ) == 0;
     }
 
-    // Override equals method
+    // equals override
     @Override
     public boolean equals(Object obj) {
 
