@@ -1,50 +1,120 @@
 package com.bridgelabz;
 
+import java.util.Objects;
+
 public class QuantityMeasurementApp {
 
-    // Generic equality checker
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    // ================= FEET CLASS =================
+    public static class Feet {
+
+        private final double value;
+
+        public Feet(double value) {
+            this.value = value;
+        }
+
+        public double toInches() {
+            return value * 12;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+            if (obj == null) return false;
+
+            if (obj instanceof Feet) {
+                Feet other = (Feet) obj;
+                return Double.compare(this.value, other.value) == 0;
+            }
+
+            if (obj instanceof Inches) {
+                Inches other = (Inches) obj;
+                return Double.compare(this.toInches(), other.value) == 0;
+            }
+
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    // Generic demonstration method
-    public static boolean demonstrateLengthComparison(
-            double value1, Length.LengthUnit unit1,
-            double value2, Length.LengthUnit unit2) {
+    // ================= INCH CLASS =================
+    public static class Inches {
 
-        Length length1 = new Length(value1, unit1);
-        Length length2 = new Length(value2, unit2);
+        private final double value;
 
-        boolean result = length1.equals(length2);
+        public Inches(double value) {
+            this.value = value;
+        }
 
-        System.out.println("Input: Quantity(" + value1 + ", " + unit1 +
-                ") and Quantity(" + value2 + ", " + unit2 + ")");
-        System.out.println("Output: Equal (" + result + ")");
-        System.out.println();
+        public double toFeet() {
+            return value / 12;
+        }
 
-        return result;
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj) return true;
+            if (obj == null) return false;
+
+            if (obj instanceof Inches) {
+                Inches other = (Inches) obj;
+                return Double.compare(this.value, other.value) == 0;
+            }
+
+            if (obj instanceof Feet) {
+                Feet other = (Feet) obj;
+                return Double.compare(this.value, other.toInches()) == 0;
+            }
+
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
+
+    // ================= STATIC METHODS =================
+
+    public static boolean compareFeet(double value1, double value2) {
+        Feet feet1 = new Feet(value1);
+        Feet feet2 = new Feet(value2);
+        return feet1.equals(feet2);
+    }
+
+    public static boolean compareInches(double value1, double value2) {
+        Inches inch1 = new Inches(value1);
+        Inches inch2 = new Inches(value2);
+        return inch1.equals(inch2);
+    }
+
+    public static boolean compareFeetAndInches(double feetValue, double inchValue) {
+        Feet feet = new Feet(feetValue);
+        Inches inches = new Inches(inchValue);
+        return feet.equals(inches);
+    }
+
+    // ================= MAIN METHOD =================
 
     public static void main(String[] args) {
 
-        // Feet vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
-                12.0, Length.LengthUnit.INCHES);
+        boolean inchResult = compareInches(1.0, 1.0);
+        boolean feetResult = compareFeet(1.0, 1.0);
+        boolean crossResult = compareFeetAndInches(1.0, 12.0);
 
-        // Yard vs Feet
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                3.0, Length.LengthUnit.FEET);
+        System.out.println("Input: 1.0 inch and 1.0 inch");
+        System.out.println("Output: Equal (" + inchResult + ")");
 
-        // Yard vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                36.0, Length.LengthUnit.INCHES);
+        System.out.println("Input: 1.0 ft and 1.0 ft");
+        System.out.println("Output: Equal (" + feetResult + ")");
 
-        // Centimeters vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETERS,
-                0.393701, Length.LengthUnit.INCHES);
-
-        // Centimeters vs Feet
-        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
-                1.0, Length.LengthUnit.FEET);
+        System.out.println("Input: 1.0 ft and 12.0 inch");
+        System.out.println("Output: Equal (" + crossResult + ")");
     }
 }
