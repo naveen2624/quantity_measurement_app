@@ -7,7 +7,7 @@ public class Length {
     private final double value;
     private final LengthUnit unit;
 
-    // Enum for supported units (base unit = inches)
+    // Base unit = INCHES
     public enum LengthUnit {
 
         FEET(12.0),
@@ -17,8 +17,8 @@ public class Length {
 
         private final double conversionFactor;
 
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
+        LengthUnit(double factor) {
+            this.conversionFactor = factor;
         }
 
         public double getConversionFactor() {
@@ -46,7 +46,7 @@ public class Length {
         return unit;
     }
 
-    // -------- STATIC CONVERSION API (UC5) --------
+    // ---------------- CONVERSION ----------------
 
     public static double convert(double value, LengthUnit source, LengthUnit target) {
 
@@ -57,34 +57,49 @@ public class Length {
             throw new IllegalArgumentException("Unit cannot be null");
 
         double baseValue = value * source.getConversionFactor();
-
         double result = baseValue / target.getConversionFactor();
 
-        return round(result);
+        return result;
     }
-
-    // -------- INSTANCE CONVERSION --------
 
     public Length convertTo(LengthUnit targetUnit) {
-
-        double convertedValue = convert(this.value, this.unit, targetUnit);
-
-        return new Length(convertedValue, targetUnit);
+        double newValue = convert(this.value, this.unit, targetUnit);
+        return new Length(newValue, targetUnit);
     }
 
-    // -------- BASE UNIT CONVERSION --------
+    // ---------------- ADDITION ----------------
+
+    public Length add(Length other) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Second operand cannot be null");
+
+        // convert both to base unit
+        double base1 = this.value * this.unit.getConversionFactor();
+        double base2 = other.value * other.unit.getConversionFactor();
+
+        double sumBase = base1 + base2;
+
+        // convert back to unit of first operand
+        double resultValue = sumBase / this.unit.getConversionFactor();
+
+        return new Length(resultValue, this.unit);
+    }
+
+    // Static overloaded addition
+    public static Length add(Length l1, Length l2) {
+
+        if (l1 == null || l2 == null)
+            throw new IllegalArgumentException("Operands cannot be null");
+
+        return l1.add(l2);
+    }
+
+    // ---------------- EQUALITY ----------------
 
     private double convertToBaseUnit() {
         return value * unit.getConversionFactor();
     }
-
-    // -------- ROUNDING --------
-
-    private static double round(double value) {
-        return Math.round(value * 100000.0) / 100000.0;
-    }
-
-    // -------- EQUALS OVERRIDE --------
 
     @Override
     public boolean equals(Object obj) {
@@ -108,10 +123,8 @@ public class Length {
         return Objects.hash(convertToBaseUnit());
     }
 
-    // -------- toString() --------
-
     @Override
     public String toString() {
-        return value + " " + unit;
+        return "Quantity(" + value + ", " + unit + ")";
     }
 }

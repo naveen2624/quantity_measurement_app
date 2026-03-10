@@ -2,42 +2,16 @@ package com.bridgelabz;
 
 public class QuantityMeasurementApp {
 
-    // Demonstrate conversion using raw value
-    public static double demonstrateLengthConversion(
-            double value,
-            Length.LengthUnit fromUnit,
-            Length.LengthUnit toUnit) {
+    public static Length demonstrateAddition(Length l1, Length l2) {
 
-        double result = Length.convert(value, fromUnit, toUnit);
+        Length result = l1.add(l2);
 
         System.out.println(
-                "Input: convert(" + value + ", " + fromUnit + ", " + toUnit + ") → Output: " + result
+                "Input: add(" + l1 + ", " + l2 + ")"
         );
 
-        return result;
-    }
-
-    // Method overloading example
-    public static Length demonstrateLengthConversion(
-            Length length,
-            Length.LengthUnit targetUnit) {
-
-        Length result = length.convertTo(targetUnit);
-
         System.out.println(
-                "Input: " + length + " → Output: " + result
-        );
-
-        return result;
-    }
-
-    // Equality demonstration
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-
-        boolean result = l1.equals(l2);
-
-        System.out.println(
-                "Input: " + l1 + " and " + l2 + " → Equal (" + result + ")"
+                "Output: " + result
         );
 
         return result;
@@ -45,23 +19,34 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        demonstrateLengthConversion(1.0,
-                Length.LengthUnit.FEET,
-                Length.LengthUnit.INCHES);
+        demonstrateAddition(
+                new Length(1.0, Length.LengthUnit.FEET),
+                new Length(2.0, Length.LengthUnit.FEET)
+        );
 
-        demonstrateLengthConversion(3.0,
-                Length.LengthUnit.YARDS,
-                Length.LengthUnit.FEET);
+        demonstrateAddition(
+                new Length(1.0, Length.LengthUnit.FEET),
+                new Length(12.0, Length.LengthUnit.INCHES)
+        );
 
-        demonstrateLengthConversion(36.0,
-                Length.LengthUnit.INCHES,
-                Length.LengthUnit.YARDS);
+        demonstrateAddition(
+                new Length(12.0, Length.LengthUnit.INCHES),
+                new Length(1.0, Length.LengthUnit.FEET)
+        );
 
-        demonstrateLengthConversion(1.0,
-                Length.LengthUnit.CENTIMETERS,
-                Length.LengthUnit.INCHES);
+        demonstrateAddition(
+                new Length(1.0, Length.LengthUnit.YARDS),
+                new Length(3.0, Length.LengthUnit.FEET)
+        );
 
-        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
-        demonstrateLengthConversion(yard, Length.LengthUnit.INCHES);
+        demonstrateAddition(
+                new Length(36.0, Length.LengthUnit.INCHES),
+                new Length(1.0, Length.LengthUnit.YARDS)
+        );
+
+        demonstrateAddition(
+                new Length(2.54, Length.LengthUnit.CENTIMETERS),
+                new Length(1.0, Length.LengthUnit.INCHES)
+        );
     }
 }
