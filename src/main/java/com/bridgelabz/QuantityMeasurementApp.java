@@ -2,49 +2,66 @@ package com.bridgelabz;
 
 public class QuantityMeasurementApp {
 
-    // Generic equality checker
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    // Demonstrate conversion using raw value
+    public static double demonstrateLengthConversion(
+            double value,
+            Length.LengthUnit fromUnit,
+            Length.LengthUnit toUnit) {
+
+        double result = Length.convert(value, fromUnit, toUnit);
+
+        System.out.println(
+                "Input: convert(" + value + ", " + fromUnit + ", " + toUnit + ") → Output: " + result
+        );
+
+        return result;
     }
 
-    // Generic demonstration method
-    public static boolean demonstrateLengthComparison(
-            double value1, Length.LengthUnit unit1,
-            double value2, Length.LengthUnit unit2) {
+    // Method overloading example
+    public static Length demonstrateLengthConversion(
+            Length length,
+            Length.LengthUnit targetUnit) {
 
-        Length length1 = new Length(value1, unit1);
-        Length length2 = new Length(value2, unit2);
+        Length result = length.convertTo(targetUnit);
 
-        boolean result = length1.equals(length2);
+        System.out.println(
+                "Input: " + length + " → Output: " + result
+        );
 
-        System.out.println("Input: Quantity(" + value1 + ", " + unit1 +
-                ") and Quantity(" + value2 + ", " + unit2 + ")");
-        System.out.println("Output: Equal (" + result + ")");
-        System.out.println();
+        return result;
+    }
+
+    // Equality demonstration
+    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
+
+        boolean result = l1.equals(l2);
+
+        System.out.println(
+                "Input: " + l1 + " and " + l2 + " → Equal (" + result + ")"
+        );
 
         return result;
     }
 
     public static void main(String[] args) {
 
-        // Feet vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
-                12.0, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(1.0,
+                Length.LengthUnit.FEET,
+                Length.LengthUnit.INCHES);
 
-        // Yard vs Feet
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                3.0, Length.LengthUnit.FEET);
+        demonstrateLengthConversion(3.0,
+                Length.LengthUnit.YARDS,
+                Length.LengthUnit.FEET);
 
-        // Yard vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
-                36.0, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(36.0,
+                Length.LengthUnit.INCHES,
+                Length.LengthUnit.YARDS);
 
-        // Centimeters vs Inches
-        demonstrateLengthComparison(1.0, Length.LengthUnit.CENTIMETERS,
-                0.393701, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(1.0,
+                Length.LengthUnit.CENTIMETERS,
+                Length.LengthUnit.INCHES);
 
-        // Centimeters vs Feet
-        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
-                1.0, Length.LengthUnit.FEET);
+        Length yard = new Length(1.0, Length.LengthUnit.YARDS);
+        demonstrateLengthConversion(yard, Length.LengthUnit.INCHES);
     }
 }
