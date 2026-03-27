@@ -2,52 +2,28 @@ package com.bridgelabz;
 
 public class QuantityMeasurementApp {
 
-    public static void demonstrateAddition(
-            Length l1,
-            Length l2,
-            Length.LengthUnit targetUnit) {
-
-        Length result = l1.add(l2, targetUnit);
-
-        System.out.println(
-                "Input: add(" + l1 + ", " + l2 + ", " + targetUnit + ")"
-        );
-
-        System.out.println(
-                "Output: " + result
-        );
-    }
-
     public static void main(String[] args) {
 
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.FEET
-        );
+        // ✅ Temperature Equality
+        Quantity<TemperatureUnit> t1 =
+                new Quantity<>(0.0, TemperatureUnit.CELSIUS);
 
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.INCHES
-        );
+        Quantity<TemperatureUnit> t2 =
+                new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
 
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.YARDS
-        );
+        System.out.println("0°C == 32°F → " + t1.equals(t2));
 
-        demonstrateAddition(
-                new Length(36.0, Length.LengthUnit.INCHES),
-                new Length(1.0, Length.LengthUnit.YARDS),
-                Length.LengthUnit.FEET
-        );
+        // ✅ Conversion
+        Quantity<TemperatureUnit> converted =
+                t1.convertTo(TemperatureUnit.FAHRENHEIT);
 
-        demonstrateAddition(
-                new Length(2.54, Length.LengthUnit.CENTIMETERS),
-                new Length(1.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.CENTIMETERS
-        );
+        System.out.println("0°C to F → " + converted);
+
+        // ❌ Unsupported Operation
+        try {
+            t1.add(new Quantity<>(10, TemperatureUnit.CELSIUS));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
