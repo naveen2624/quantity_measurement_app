@@ -120,3 +120,4 @@ class QuantityTemperatureTest {
         assertEquals(1832.0, result.getValue(), EPS);
     }
 }
+
